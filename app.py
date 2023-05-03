@@ -1,0 +1,40 @@
+import pandas as pd
+import streamlit as st
+from pandasai import PandasAI
+from pandasai.llm.openai import OpenAI
+
+
+st.set_page_config(
+        page_title="Hello",
+        page_icon="👋",
+        )
+
+st.write(f'# Welcome to ChatData! 👋')
+st.subheader('Chat anything with your Data!')
+
+st.markdown(
+    """
+     **This app using GPT Model,** so make sure don't upload any confidential data here.
+    Created by Rizqiansyah!
+    """
+    )
+
+OPENAI_API_KEY = st.text_input(label="Add Your OPENAI API KEY", value="")
+
+if OPENAI_API_KEY != "":
+    llm = OpenAI(api_token=OPENAI_API_KEY)
+    pandas_ai = PandasAI(llm)
+    
+    st.subheader('Upload your Data')
+    file_upload = st.file_uploader(label="Choose a CSV file")
+
+
+    if file_upload is not None:
+        st.subheader('Sample Data')
+        data = pd.read_csv(file_upload)
+        st.dataframe(data.sample(10))
+        st.subheader('Question')
+        question = st.text_input(label="Add questions to your data", value="")
+        if question != "":
+            st.subheader('Result:')
+            st.write(pandas_ai.run(data, prompt='Which are the 5 happiest countries?'))
