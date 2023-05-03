@@ -15,11 +15,13 @@ st.subheader('Chat anything with your Data!')
 st.markdown(
     """
      **This app using GPT Model,** so make sure don't upload any confidential data here.
-    Created by Rizqiansyah!
+    
+    This App created by Rizqiansyah!
     """
     )
 
 OPENAI_API_KEY = st.text_input(label="Add Your OPENAI API KEY", value="")
+st.markdown("If you don't know how to get an OPEN API Key. [Check this blog!](https://www.howtogeek.com/885918/how-to-get-an-openai-api-key/).")
 
 if OPENAI_API_KEY != "":
     llm = OpenAI(api_token=OPENAI_API_KEY)
@@ -37,4 +39,4 @@ if OPENAI_API_KEY != "":
         question = st.text_input(label="Add questions to your data", value="")
         if question != "":
             st.subheader('Result:')
-            st.write(pandas_ai.run(data, prompt='Which are the 5 happiest countries?'))
+            st.write(pandas_ai.run(data, prompt=question))
